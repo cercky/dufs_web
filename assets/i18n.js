@@ -115,7 +115,7 @@ const I18N = {
     zipFallbackTitle: '将逐个下载',
     zipFallbackBodySize: (size, count, limitMB) => {
       const limitDisplay = limitMB >= 1024 ? `${(limitMB / 1024).toFixed(2)} GB` : `${limitMB} MB`;
-      return `选中AAAA的 ${count} 个项目总计约 <strong>${size}</strong>，超过单次打包限制（${limitDisplay}）。<br>将依次触发 ${count} 个独立下载，请不要关闭此页面。`;
+      return `选中的 ${count} 个项目总计约 <strong>${size}</strong>，超过单次打包限制（${limitDisplay}）。<br>将依次触发 ${count} 个独立下载，请不要关闭此页面。`;
     },
     zipFallbackBodyDir: (size, count, limitMB) => {
       const limitDisplay = limitMB >= 1024 ? `${(limitMB / 1024).toFixed(2)} GB` : `${limitMB} MB`;

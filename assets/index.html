@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=?noscript">
+  </noscript>
+  <link rel="icon" type="image/x-icon" href="__ASSETS_PREFIX__favicon.ico">
+  <link rel="stylesheet" href="__ASSETS_PREFIX__base.css">
+  <link rel="stylesheet" href="__ASSETS_PREFIX__components.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- 顶部导航栏 -->
+    <!-- 单行 Header：品牌 · 搜索 · 操作按钮 · 语言 · 用户 -->
+    <header class="header">
+      <div class="header-top">
+        <!-- 第1段：标题 -->
+        <div class="header-section header-title">
+          <div class="header-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span class="brand-name" id="brandName"></span>
+          </div>
+        </div>
+        <!-- 第2段：占位 -->
+        <div class="header-section header-spacer"></div>
+        <!-- 第3段：搜索 -->
+        <div class="header-section header-search">
+          <form class="searchbar hidden">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input id="search" name="q" type="text" placeholder="" autocomplete="off">
+            <input type="submit" hidden />
+          </form>
+        </div>
+        <!-- 第4段：语言 -->
+        <div class="header-section header-language">
+          <div class="language-selector">
+            <button class="language-btn" title="切换语言">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span class="current-lang">中文</span>
+            </button>
+            <div class="language-dropdown hidden">
+              <div class="language-option" data-lang="zh-CN">
+                <span class="flag">🇨🇳</span>
+                <span>简体中文</span>
+              </div>
+              <div class="language-option" data-lang="en-US">
+                <span class="flag">🇺🇸</span>
+                <span>English</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 第5段：登录 -->
+        <div class="header-section header-auth">
+          <!-- 上传状态指示器 -->
+          <div class="upload-button-wrapper">
+            <button class="upload-status-indicator hidden" id="uploadStatusIndicator" title="打开上传面板">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </button>
+            <!-- 上传面板 -->
+            <div class="upload-panel hidden" id="uploadFloatingPanel">
+              <div class="upload-panel-header">
+                <span class="upload-panel-title">上传</span>
+                <div class="upload-panel-controls">
+                  <button class="upload-clear-btn" id="uploadClearBtn" title="清理已完成/失败的任务">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                  </button>
+                  <button class="upload-close-btn" id="uploadCloseBtn" title="关闭">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="upload-panel-content" id="uploadFloatingContent">
+                <div id="uploadFileList" class="upload-file-list"></div>
+              </div>
+            </div>
+          </div>
+          <div class="login-btn hidden" title="登录">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10 17 15 12 10 7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            <span class="login-text"></span>
+          </div>
+          <div class="logout-btn hidden" title="退出登录">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            <span class="user-name"></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+      <div class="index-page hidden">
+        <!-- 文件恢复选择模态框 -->
+        <div id="restoreFileModal" class="modal hidden">
+          <div class="modal-backdrop"></div>
+          <div class="modal-dialog" style="max-width: 500px;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <path d="M12 19v-6"/>
+                    <path d="M9 16l3 3 3-3"/>
+                  </svg>
+                  <span>恢复上传任务</span>
+                </h3>
+              </div>
+              <div class="modal-body">
+                <p class="modal-message">检测到有未完成的上传任务，请重新选择文件以继续上传：</p>
+                <div id="restoreFileList" class="restore-file-list"></div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-default" id="restoreSkipBtn">跳过</button>
+                <button class="btn btn-primary" id="restoreConfirmBtn">恢复上传</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 公共顶栏 -->
+        <div class="list-view-header">
+          <!-- 左：控制按钮 + 批量操作（选中时淡入） -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+            <div class="toolbar-action-btns hidden">
+              <button class="tbar-btn upload-btn hidden" title="上传">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <span>上传</span>
+                <input type="file" id="fileInput" multiple hidden>
+              </button>
+              <button class="tbar-btn new-folder-btn hidden" title="新建文件夹">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                  <line x1="12" y1="11" x2="12" y2="17"/>
+                  <line x1="9" y1="14" x2="15" y2="14"/>
+                </svg>
+                <span>新建文件夹</span>
+              </button>
+              <button class="tbar-btn new-file-btn hidden" title="新建文件">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="12" y1="18" x2="12" y2="12"/>
+                  <line x1="9" y1="15" x2="15" y2="15"/>
+                </svg>
+                <span>新建文件</span>
+              </button>
+              <a class="tbar-btn download-zip-btn hidden" title="下载全部">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span>下载全部</span>
+              </a>
+              <div class="tbar-sep"></div>
+            </div>
+
+          </div>
+          <!-- 右：排序和视图切换 -->
+          <div class="list-view-controls">
+            <div class="grid-sort-controls" id="gridSortControls">
+              <div class="sort-controls">
+                <select class="sort-select" id="gridSortSelect">
+                  <option value="name" class="t-sortByName">文件名</option>
+                  <option value="mtime" class="t-sortByMtime">修改时间</option>
+                  <option value="size" class="t-sortBySize">大小</option>
+                </select>
+                <button class="sort-order-btn" id="gridSortOrderBtn" title="切换排序顺序">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14m0 0l-5-5m5 5l5-5"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="view-toggle-inline" id="listViewToggle">
+              <button class="view-btn-inline active" data-view="list" title="列表视图">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+                  <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+                  <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+              </button>
+              <button class="view-btn-inline" data-view="grid" title="网格视图">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 路径导航（紧凑，位于表头上方）-->
+        <div class="content-breadcrumb">
+          <nav class="breadcrumb"></nav>
+        </div>
+        
+        <!-- 文件列表 - 列表视图 -->
+        <div class="file-list-view">
+          <!-- 表格容器 -->
+          <div class="paths-table-container">
+            <!-- 表头：独立圆角容器 -->
+            <div class="paths-table-header-wrap hidden" id="pathsTableHeaderWrap">
+              <table class="paths-table-head">
+                <thead></thead>
+              </table>
+            </div>
+            <!-- 表体 -->
+            <table class="paths-table hidden">
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="empty-state hidden">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            <p class="empty-text"></p>
+          </div>
+        </div>
+
+        <!-- 文件列表 - 网格视图 -->
+        <div class="file-grid-view hidden">
+        </div>
+      </div>
+
+      <!-- 编辑器页面 -->
+      <div class="editor-page hidden">
+        <div class="editor-toolbar">
+          <button class="btn btn-primary save-btn hidden" title="保存">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            <span class="save-text"></span>
+          </button>
+          <button class="btn btn-default move-file-btn hidden" title="移动/重命名">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="5 9 2 12 5 15"/>
+              <polyline points="9 5 12 2 15 5"/>
+              <polyline points="15 19 12 22 9 19"/>
+              <polyline points="19 15 22 12 19 9"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <line x1="12" y1="2" x2="12" y2="22"/>
+            </svg>
+            <span class="move-text"></span>
+          </button>
+          <button class="btn btn-danger delete-file-btn hidden" title="删除">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            <span class="delete-text"></span>
+          </button>
+          <button class="btn btn-default back-btn" onclick="history.back()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            <span class="back-text"></span>
+          </button>
+        </div>
+        <div class="not-editable hidden">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <p class="not-editable-text"></p>
+        </div>
+        <textarea id="editor" class="editor hidden" spellcheck="false"></textarea>
+        <iframe id="preview-frame" class="preview-frame hidden" referrerpolicy="no-referrer"></iframe>
+      </div>
+    </main>
+
+    <!-- 多选功能悬浮条 -->
+    <div class="bulk-actions-floating" id="bulkActionsFloating">
+      <div class="list-bulk-actions" id="listBulkActions">
+        <span class="bulk-label" id="listBulkLabel"></span>
+        <button class="btn-gba btn-gba-cancel" id="listBulkCancel" title="退出选择">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+        <button class="btn-gba" id="listBulkDownload">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span id="listBulkDlText"></span>
+        </button>
+        <button class="btn-gba btn-gba-danger" id="listBulkDelete">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+          </svg>
+          <span id="listBulkDelText"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+      <div class="footer-content">
+        <span class="footer-text" id="footerText"></span>
+        <span class="footer-divider">•</span>
+        <span class="footer-count" id="fileCount"></span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 上下文菜单 -->
+  <div class="context-menu hidden" id="contextMenu">
+    <div class="context-menu-item" data-action="download">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      <span class="ctx-download"></span>
+    </div>
+    <div class="context-menu-item" data-action="move">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="5 9 2 12 5 15"/>
+        <polyline points="9 5 12 2 15 5"/>
+        <polyline points="15 19 12 22 9 19"/>
+        <polyline points="19 15 22 12 19 9"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <line x1="12" y1="2" x2="12" y2="22"/>
+      </svg>
+      <span class="ctx-move"></span>
+    </div>
+    <div class="context-menu-item" data-action="delete">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+      </svg>
+      <span class="ctx-delete"></span>
+    </div>
+    <div class="context-menu-item" data-action="edit">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      <span class="ctx-edit"></span>
+    </div>
+  </div>
+
+  <!-- 提示框 -->
+  <div class="toast hidden" id="toast">
+    <span class="toast-message"></span>
+  </div>
+
+
+
+  <!-- 退出确认模态框 -->
+  <div id="logoutModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+            </svg>
+            <span class="logout-title-text"></span>
+          </h3>
+          <button class="modal-close" id="closeLogoutModal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="logout-confirm-text"></p>
+          <p class="logout-user-info">
+            <strong class="logout-username"></strong>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="cancelLogoutBtn">
+            <span class="cancel-text"></span>
+          </button>
+          <button type="button" class="btn btn-danger" id="confirmLogoutBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+            </svg>
+            <span class="logout-btn-text"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 批量下载进度模态框 -->
+  <div id="dlProgressModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" style="max-width:450px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span id="dlProgressTitle"></span>
+          </h3>
+        </div>
+        <div class="modal-body">
+          <p id="dlProgressMsg" class="modal-message" style="margin-bottom:12px;"></p>
+          
+          <!-- 下载进度区域 -->
+          <div id="dlDownloadSection">
+            <div class="dl-section-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span data-i18n="downloadSectionLabel">下载文件</span>
+            </div>
+            <div class="dl-progress-track">
+              <div class="dl-progress-fill" id="dlDownloadFill" style="width: 0%;"></div>
+            </div>
+            <div class="dl-progress-info">
+              <span id="dlDownloadCount" class="dl-progress-count"></span>
+            </div>
+            <div class="dl-current-file-container" id="dlCurrentFileContainer" style="display: none;">
+              <div class="dl-current-file">
+                <div class="dl-file-name" id="dlCurrentFileName"></div>
+                <div class="dl-file-progress-wrapper">
+                  <div class="dl-file-progress-track">
+                    <div class="dl-file-progress-fill" id="dlFileProgressFill"></div>
+                    <span class="dl-file-progress-bytes" id="dlFileProgressBytes" style="display: block;">0B/0B</span>
+                  </div>
+                  <div class="dl-file-progress-pct" id="dlFileProgressText">0%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 压缩进度区域（默认隐藏） -->
+          <div id="dlCompressSection" style="display: none;">
+            <div class="dl-section-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span data-i18n="compressSectionLabel">压缩打包</span>
+            </div>
+            <div class="dl-progress-track">
+              <div class="dl-progress-fill" id="dlCompressFill" style="width: 0%;"></div>
+            </div>
+            <div class="dl-progress-info">
+              <span id="dlCompressPct">0%</span>
+              <span id="dlCompressStatus" class="dl-progress-status"></span>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通用模态框（confirm / prompt / alert 共用） -->
+  <div id="appModal" class="modal hidden">
+    <div class="modal-backdrop" id="appModalBackdrop"></div>
+    <div class="modal-dialog" id="appModalDialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="appModalTitle"></h3>
+          <button class="modal-close" id="appModalClose">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body" id="appModalBody"></div>
+        <div class="modal-footer" id="appModalFooter"></div>
+      </div>
+    </div>
+  </div>
+
+  <template id="index-data">__INDEX_DATA__</template>
+  <!-- 定义 assets 基础路径（供 JS 模块动态加载资源使用） -->
+  <script>
+    window.ASSETS_PREFIX = '__ASSETS_PREFIX__';
+    // 应用名称配置（可自定义）
+    window.APP_NAME = 'Dufs';
+  </script>
+  <!-- 模块加载顺序：工具函数 → 多语言 → 认证 → 上传器 → 主逻辑 -->
+  <script src="__ASSETS_PREFIX__utils.js"></script>
+  <script src="__ASSETS_PREFIX__i18n.js"></script>
+  <script src="__ASSETS_PREFIX__auth.js"></script>
+  <script src="__ASSETS_PREFIX__uploader.js"></script>
+  <script src="__ASSETS_PREFIX__app.js"></script>
+</body>
+
+</html>

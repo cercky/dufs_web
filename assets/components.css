@@ -1,0 +1,1989 @@
+/* ==================== 主内容区 ==================== */
+.main-content {
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ==================== 卡片样式 ==================== */
+.file-list-view,
+.file-grid-view {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== 工具栏（现位于 header-toolbar 内）==================== */
+/* .toolbar 已迁移至 header 第二行，此处保留 toolbar-group 供复用 */
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+/* 按钮样式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-default {
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-default:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-danger {
+  background: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: var(--danger-hover);
+}
+
+.btn-sm {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.85rem;
+}
+
+/* 视图切换 - 操作列内联样式 */
+.view-toggle-inline {
+  display: flex;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.view-btn-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.view-btn-inline.active {
+  background: var(--primary-color);
+  color: white;
+  border-radius: var(--radius-xs);
+}
+
+.view-btn-inline:hover:not(.active) {
+  background: var(--bg-tertiary);
+  color: var(--primary-color);
+}
+
+/* ==================== 上传面板 ==================== */
+.upload-panel {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.upload-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.upload-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ==================== 表格样式 ==================== */
+.paths-table,
+.uploaders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+}
+
+/* 表头行：背景 + 底部分隔线，无 border-radius（collapse 模式不支持） */
+.paths-table thead tr,
+.uploaders-table thead tr {
+  background: var(--bg-secondary);
+}
+
+.paths-table th,
+.uploaders-table th {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+  border-bottom: 1.5px solid var(--border-color);
+}
+
+/* 圆角由包裹容器实现：.file-list-view 给 thead 包一层圆角 div */
+.paths-table-header-wrap {
+  overflow: hidden;
+  margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-primary);
+}
+
+.paths-table-header-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* 表头和表体共用相同的列宽设置 */
+.paths-table,
+.paths-table-head {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.paths-table-header-wrap th,
+.paths-table th,
+.paths-table td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.paths-table-header-wrap th {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+  background: var(--bg-secondary);
+  border: none;
+}
+
+/* 表格容器 */
+.paths-table-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0; /* 确保flex子元素能够正确收缩 */
+}
+
+/* 面包屑导航栏在列表视图中的样式 */
+.file-list-view .content-breadcrumb {
+  padding: 0 0 0px;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+/* 表头容器 */
+.paths-table-header-wrap {
+  overflow: hidden;
+  margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-primary);
+  flex-shrink: 0;
+}
+
+/* 表体容器：添加智能滚动条 */
+.paths-table {
+  display: block;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0; /* 确保flex子元素能够正确收缩 */
+  max-height: calc(100vh - 250px); /* 确保有明确的高度限制 */
+  scrollbar-gutter: stable; /* 防止滚动条出现时布局跳动 */
+}
+
+/* 表格行在虚拟滚动时的样式 */
+.paths-table tbody tr[id^="pathRow"] {
+  height: 50px; /* 与虚拟滚动配置的 itemHeight 保持一致 */
+  box-sizing: border-box;
+}
+
+.paths-table tbody {
+  display: table;
+  width: 100%;
+}
+
+/* 滚动条平滑过渡 */
+.paths-table,
+.file-grid-view {
+  transition: all 0.15s ease;
+}
+
+/* 增强滚动条在需要时的可见性 */
+.paths-table.has-scrollbar,
+.file-grid-view.has-scrollbar {
+  /* 可以在这里添加特殊样式，如果需要的话 */
+}
+
+/* ================================================================
+   列宽设置（table-layout: fixed 模式）
+   
+   列结构：[复选框] [图标] [文件名──自动填充──] [修改时间] [大小] [操作]
+   
+   调整说明：
+   - 修改各列的 width 值即可改变列宽
+   - cell-name 不设 width，由浏览器自动分配剩余空间（始终贴满右侧）
+   - cell-actions 绝对不能设 display:flex（会破坏 table-layout:fixed）
+     flex 布局由内层 .cell-actions-inner 负责
+   ================================================================ */
+
+/* 复选框列 ── 调整此值改变复选框列宽 */
+.cell-checkbox {
+  width: 48px;
+  text-align: center;
+}
+
+/* 图标列 ── 调整此值改变图标列宽 */
+.cell-icon {
+  width: 44px;
+}
+
+/* 文件名列 ── 不写 width，自动占满剩余宽度 */
+.cell-name {
+  /* 留空，table-layout:fixed 下自动填充 */
+}
+
+/* 修改时间列 ── 调整此值改变时间列宽 */
+.cell-mtime {
+  width: 160px;
+}
+
+/* 大小列 ── 调整此值改变大小列宽 */
+.cell-size {
+  width: 110px;
+  text-align: right;
+}
+
+/* 操作列 ── 调整此值改变操作按钮列宽
+   ⚠️  禁止在此添加 display:flex，否则列宽失效
+       flex 对齐由 .cell-actions-inner 内层 div 完成 */
+.cell-actions {
+  width: 160px;
+  text-align: right;
+}
+
+/* 操作列内层容器：负责按钮右对齐排列 */
+.cell-actions-inner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-xs);
+}
+
+.cell-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Hide individual checkboxes by default, show on row hover or when checked */
+.paths-table tbody .cell-checkbox input[type="checkbox"] {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.paths-table tbody tr:hover .cell-checkbox input[type="checkbox"],
+.paths-table tbody .cell-checkbox input[type="checkbox"]:checked {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Keep select-all checkbox always visible */
+.paths-table-header-wrap .cell-checkbox input[type="checkbox"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.paths-table th a,
+.paths-table-head th a {
+  color: var(--primary-color);
+  text-decoration: none;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.paths-table th a:hover,
+.paths-table-head th a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* 确保表头链接在点击后不改变颜色 */
+.paths-table th a:visited,
+.paths-table-head th a:visited {
+  color: var(--primary-color);
+}
+
+/* 确保操作栏中的链接在任何状态下都保持一致的颜色 */
+.cell-actions a {
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.cell-actions a:hover {
+  color: var(--primary-color);
+}
+
+.cell-actions a:visited {
+  color: var(--text-secondary);
+}
+
+/* 确保表格行选中时，操作栏中的链接颜色不受影响 */
+.paths-table tbody tr[id^="pathRow"]:has(.path-checkbox:checked) .cell-actions a {
+  color: var(--text-secondary);
+}
+
+.paths-table tbody tr[id^="pathRow"]:has(.path-checkbox:checked) .cell-actions a:hover {
+  color: var(--primary-color);
+}
+
+.paths-table tbody tr[id^="pathRow"]:has(.path-checkbox:checked) .cell-actions a:visited {
+  color: var(--text-secondary);
+}
+
+.paths-table tbody tr,
+.uploaders-table tbody tr {
+  border-bottom: 1px solid var(--border-light);
+  transition: all var(--transition-fast);
+}
+
+.paths-table tbody tr:hover {
+  background: var(--bg-secondary);
+  transform: scale(1.002);
+}
+
+.paths-table td,
+.uploaders-table td {
+  padding: var(--spacing-md);
+  vertical-align: middle;
+}
+
+/* 文件列表单元格 */
+.cell-icon {
+  width: 40px;
+}
+
+.cell-icon svg {
+  width: 32px;
+  height: 32px;
+  /* 图标颜色由 SVG 内联 fill 控制，不再用 CSS 覆盖 */
+}
+
+.cell-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.cell-name a {
+  color: var(--primary-color);
+  text-decoration: none;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.cell-name a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.cell-mtime {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.cell-size {
+  text-align: right;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-progress {
+  width: 200px;
+}
+
+.cell-status {
+  width: 100px;
+  text-align: center;
+}
+
+/* .cell-actions 的 flex 布局已移至 .cell-actions-inner，此处不重复设置 */
+
+/* 操作按钮 */
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--text-secondary);
+}
+
+.action-btn:hover {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.action-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ==================== 空状态 ==================== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: var(--text-muted);
+}
+
+.empty-state svg {
+  margin-bottom: var(--spacing-md);
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* ==================== 列表视图顶栏 ==================== */
+/* ==================== 工具栏图标按钮（tbar-btn）==================== */
+/* 与视图切换按钮风格一致，纯图标 + title tooltip */
+.toolbar-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.tbar-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: var(--primary-light);
+  text-decoration: none;
+}
+
+.tbar-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--border-color);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 5px 7px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 32px;   /* 默认只显示图标宽度 */
+}
+
+.icon-btn svg {
+  flex-shrink: 0;
+}
+
+.icon-btn span {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width var(--transition-normal), opacity var(--transition-fast), margin var(--transition-normal);
+  margin-left: 0;
+}
+
+.icon-btn:hover {
+  border-color: var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--primary-color);
+  max-width: 160px;
+}
+
+.icon-btn:hover span {
+  max-width: 120px;
+  opacity: 1;
+  margin-left: 5px;
+}
+
+/* 上传按钮高亮色 */
+.icon-btn.upload-btn:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+/* ==================== 列表 & 网格视图顶栏（共用结构）==================== */
+.list-view-header,
+.grid-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+  min-height: 36px;
+  flex-shrink: 0;
+}
+
+/* 网格 header 是 grid 子项，需独占一行 */
+.grid-view-header {
+  grid-column: 1 / -1;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+}
+
+/* ── 批量操作区（左侧，两视图共用）────────────────── */
+.list-bulk-actions {
+  margin-left: auto;  /* 推至右侧 */
+}
+
+.list-bulk-actions,
+.grid-bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.list-bulk-actions.visible,
+.grid-bulk-actions.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.list-bulk-actions .bulk-label,
+.grid-bulk-actions .bulk-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.list-bulk-actions .btn-gba,
+.grid-bulk-actions .btn-gba {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.list-bulk-actions .btn-gba:hover,
+.grid-bulk-actions .btn-gba:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: var(--primary-light);
+}
+
+.list-bulk-actions .btn-gba-danger,
+.grid-bulk-actions .btn-gba-danger {
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+}
+
+.list-bulk-actions .btn-gba-danger:hover,
+.grid-bulk-actions .btn-gba-danger:hover {
+  background: #fdf0ef;
+}
+
+.list-bulk-actions .btn-gba-cancel,
+.grid-bulk-actions .btn-gba-cancel {
+  padding: 4px 8px;
+}
+
+/* ── 控制区（右侧，两视图共用）────────────────────── */
+.list-view-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* 网格视图排序控件 */
+.grid-sort-controls {
+  display: none;
+}
+
+.grid-view-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+/* ==================== 网格视图 ==================== */
+.file-grid-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-lg);
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0; /* 确保flex子元素能够正确收缩 */
+  max-height: calc(100vh - 200px); /* 确保有明确的高度限制 */
+  padding: 20px;
+  scrollbar-gutter: stable; /* 防止滚动条出现时布局跳动 */
+}
+
+/* 网格项在虚拟滚动时的样式 */
+.file-grid-view .grid-item {
+  height: 220px; /* 与虚拟滚动配置的 itemHeight 保持一致 */
+  box-sizing: border-box;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.sort-select {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sort-select:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.sort-order-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sort-order-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: var(--primary-light);
+}
+
+.sort-order-btn svg {
+  transition: transform var(--transition-fast);
+}
+
+.sort-order-btn.asc svg {
+  transform: rotate(180deg);
+}
+
+.grid-item {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+}
+
+.grid-item-checkbox {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  /* 默认隐藏复选框 */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.grid-item-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+/* 选择模式：显示所有复选框 */
+.file-grid-view.selection-mode .grid-item-checkbox {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 选中状态：高亮卡片 */
+.file-grid-view.selection-mode .grid-item:has(.grid-checkbox:checked) {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+}
+.file-grid-view.selection-mode .grid-item:has(.grid-checkbox:checked) .grid-item-checkbox {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.grid-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
+}
+
+/* 选择模式下禁用 hover 浮起效果，避免视觉干扰 */
+.file-grid-view.selection-mode .grid-item:hover {
+  transform: none;
+}
+
+.grid-item-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--spacing-md);
+  fill: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-item-icon svg {
+  width: 100%;
+  height: 100%;
+  /* 图标颜色由 SVG 内联 fill 控制 */
+}
+
+.grid-item-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: var(--spacing-sm);
+}
+
+.grid-item-size {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ==================== 编辑器页面 ==================== */
+.editor-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+}
+
+.editor-toolbar {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+}
+
+.editor {
+  flex: 1;
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  resize: none;
+  transition: all var(--transition-fast);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.editor:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.not-editable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) * 2;
+  color: var(--text-muted);
+}
+
+.not-editable svg {
+  margin-bottom: var(--spacing-md);
+}
+
+.not-editable-text {
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+.preview-frame {
+  flex: 1;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+}
+
+/* ==================== 模态框 ==================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  margin: var(--spacing-lg);
+  z-index: 10001;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: var(--spacing-lg);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+/* 表单样式 */
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.checkbox-group {
+  margin-top: var(--spacing-md);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+/* ==================== 页脚 ==================== */
+.footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.footer-divider {
+  color: var(--text-muted);
+}
+
+/* ==================== 上下文菜单 ==================== */
+.context-menu {
+  position: fixed;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-xs);
+  z-index: 1000;
+  min-width: 180px;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.context-menu-item:hover {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.context-menu-item svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ==================== 提示框 ==================== */
+.toast {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 500;
+  transition: transform var(--transition-normal);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast-message {
+  font-size: 0.9rem;
+}
+
+/* ==================== 进度条 ==================== */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3px;
+  transition: width var(--transition-fast);
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 768px) {
+  .header-content {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+  
+  .searchbar {
+    min-width: 200px;
+    flex: 1;
+  }
+  
+  .toolbar {
+    flex-wrap: wrap;
+  }
+  
+  .paths-table {
+    font-size: 0.85rem;
+  }
+  
+  .paths-table th,
+  .paths-table td {
+    padding: var(--spacing-sm);
+  }
+  
+  .cell-mtime {
+    display: none;
+  }
+  
+  .file-grid-view {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+/* ==================== 动画效果 ==================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.paths-table tbody tr,
+.grid-item {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* 上传状态图标 */
+/* 上传表格单元格 */
+.uploaders-table .cell-name {
+  width: 50%;
+  max-width: 400px;
+}
+
+.uploaders-table .cell-progress {
+  width: 30%;
+}
+
+.uploaders-table .cell-status {
+  width: 20%;
+  max-width: 200px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.upload-status-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.upload-success {
+  color: var(--success-color);
+}
+
+.upload-error {
+  color: var(--danger-color);
+}
+
+.retry-btn {
+  cursor: pointer;
+  margin-left: var(--spacing-xs);
+}
+
+.retry-btn:hover {
+  color: var(--primary-color);
+}
+
+/* ==================== 列表视图多选拖拽 ==================== */
+.paths-table tbody tr[id^="pathRow"] {
+  user-select: none;    /* 拖选时不触发文字选中 */
+}
+.paths-table tbody tr[id^="pathRow"]:not(:has(td.cell-checkbox input:checked)) {
+  cursor: default;
+}
+/* 拖选进行中：整行高亮 */
+.paths-table tbody tr[id^="pathRow"]:has(.path-checkbox:checked) {
+  background-color: var(--primary-light);
+}
+
+/* ==================== 通用模态框变体 ==================== */
+/* 危险操作：红色标题图标 */
+.modal-title.modal-title-danger {
+  color: var(--danger-color);
+}
+.modal-title.modal-title-danger svg {
+  color: var(--danger-color);
+}
+
+/* 输入框标签 */
+.modal-input-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* 通用消息文本 */
+.modal-message {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  word-break: break-all;
+}
+
+/* 多选功能悬浮条 */
+.bulk-actions-floating {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-sm);
+  width: auto;
+  min-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.bulk-actions-floating .list-bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.bulk-actions-floating.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-message strong {
+  color: var(--danger-color);
+}
+
+/* ==================== 批量下载进度条 ==================== */
+.dl-progress-track {
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: var(--spacing-xs);
+}
+
+.dl-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary-color);
+  border-radius: 4px;
+  transition: width 0.25s ease;
+}
+
+.dl-progress-pct {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: right;
+  margin: 0;
+}
+
+/* 分阶段进度显示 */
+.dl-section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.dl-section-label svg {
+  opacity: 0.7;
+}
+
+.dl-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+
+.dl-progress-bytes,
+.dl-progress-status {
+  color: var(--text-muted);
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.dl-progress-count {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* 批量下载详细进度信息 */
+.dl-current-file-container {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.dl-current-file {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.dl-file-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.dl-file-details {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.dl-file-details span:first-child {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.dl-file-progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+}
+
+.dl-file-progress-track {
+  flex: 1;
+  position: relative;
+  height: 20px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  margin-top: var(--spacing-sm);
+}
+
+.dl-file-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+  border-radius: 4px;
+  transition: width 0.15s ease;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.dl-file-progress-bytes {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #292828;  /* 白色文字 */
+  z-index: 5;
+  white-space: nowrap;
+  font-family: 'Consolas', 'Monaco', monospace;
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  text-align: center;
+  /* 添加文字阴影确保在浅色背景上可见 */
+  text-shadow: 
+    0 0 2px #fff,
+    0 0 2px #fff,
+    0 0 4px #fff;
+}
+
+.dl-file-progress-pct {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  min-width: 40px;
+  text-align: right;
+}
+
+.dl-file-progress-text {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.dl-overall-progress {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  gap: var(--spacing-md);
+}
+
+.dl-overall-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.dl-overall-pct {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 45px;
+  text-align: right;
+}
+
+.dl-overall-bytes {
+  color: var(--text-muted);
+  font-family: 'Consolas', 'Monaco', monospace;
+  white-space: nowrap;
+}
+
+
+/* ==================== 新统一上传面板样式 ==================== */
+.upload-content {
+  padding: var(--spacing-lg);
+}
+
+.upload-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.progress-bar-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.progress-bar-container .progress-bar {
+  flex: 1;
+}
+
+.progress-text {
+  min-width: 50px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.upload-speed {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.upload-status-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.upload-file-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs);
+}
+
+.upload-file-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.upload-file-item:hover {
+  background: var(--bg-secondary);
+}
+
+.upload-file-item .file-icon {
+  font-size: 1.2rem;
+}
+
+.upload-file-item .file-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.upload-file-item .file-status {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.upload-file-item .file-status.status-success {
+  color: var(--success-color);
+}
+
+.upload-file-item .file-status.status-error {
+  color: var(--danger-color);
+}
+
+/* 单个文件进度条样式 */
+.upload-file-item .file-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.upload-file-item .file-name {
+  flex: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.upload-file-item .file-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.upload-file-item .file-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.upload-file-item .file-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.upload-file-item .file-progress-text-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.upload-file-item .file-progress-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.upload-file-item .file-speed-text {
+  font-size: 0.75rem;
+  color: var(--primary-color);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 上传列表项状态样式 */
+.upload-file-item.status-waiting {
+  background: rgba(255, 193, 7, 0.05);
+}
+
+.upload-file-item.status-uploading {
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.upload-file-item.status-uploading .file-progress-fill {
+  animation: progressPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes progressPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.upload-file-item.status-completed {
+  background: rgba(40, 167, 69, 0.05);
+}
+
+.upload-file-item.status-failed {
+  background: rgba(220, 53, 69, 0.05);
+}
+
+/* 文件操作按钮 */
+.upload-file-item .file-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.upload-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.upload-action-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--primary-color);
+}
+
+.upload-action-btn[data-action="cancel"]:hover,
+.upload-action-btn[data-action="delete"]:hover {
+  color: var(--danger-color);
+}
+
+.upload-button-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+/* ==================== 上传面板 ==================== */
+.upload-panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 340px;
+  max-height: 400px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.upload-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.upload-panel-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.upload-panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.upload-close-btn,
+.upload-clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.upload-close-btn:hover,
+.upload-clear-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.upload-panel-content {
+  padding: 10px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ==================== 文件恢复选择模态框 ==================== */
+.restore-file-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: var(--spacing-md);
+}
+
+.restore-file-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-sm);
+  transition: all var(--transition-fast);
+}
+
+.restore-file-item:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+}
+
+.restore-file-item.selected {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+}
+
+.restore-file-item .file-icon {
+  font-size: 1.5rem;
+}
+
+.restore-file-item .file-info {
+  flex: 1;
+}
+
+.restore-file-item .file-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.restore-file-item .file-progress {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.restore-file-item .select-file-btn {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.restore-file-item .select-file-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.restore-file-item .file-selected {
+  font-size: 0.8rem;
+  color: var(--success-color);
+  font-weight: 500;
+}
+
+/* ==================== 上传状态指示器 ==================== */
+.upload-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--border-color);
+}
+
+.upload-status-indicator:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-color);
+}
+
+.upload-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.upload-indicator-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.upload-status-indicator:hover .upload-indicator-text {
+  color: var(--primary-color);
+}
+
+/* 上传按钮状态样式 */
+.upload-status-indicator.status-waiting {
+  background: rgba(255, 193, 7, 0.1);
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+.upload-status-indicator.status-waiting:hover {
+  background: rgba(255, 193, 7, 0.2);
+}
+
+.upload-status-indicator.status-uploading {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: #667eea;
+  color: #667eea;
+  animation: buttonPulse 1.5s ease-in-out infinite;
+}
+
+.upload-status-indicator.status-uploading:hover {
+  background: rgba(102, 126, 234, 0.2);
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(102, 126, 234, 0);
+  }
+}
+
+.upload-status-indicator.status-completed {
+  background: rgba(40, 167, 69, 0.1);
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.upload-status-indicator.status-completed:hover {
+  background: rgba(40, 167, 69, 0.2);
+}
+
+.upload-status-indicator.status-error {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.upload-status-indicator.status-error:hover {
+  background: rgba(220, 53, 69, 0.2);
+}

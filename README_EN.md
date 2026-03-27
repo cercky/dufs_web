@@ -26,7 +26,11 @@ A modern web file server frontend interface that provides an intuitive and effic
 
 Dufs Web is a feature-rich file server **web frontend** solution built with vanilla JavaScript, requiring no framework dependencies. It offers a cloud-drive-like file management experience with support for file upload, download, preview, editing, and more.
 
-![Interface Preview](images/image1.png)
+![Interface Preview1](images/image1.png)
+![Interface Preview2](images/image2.png)
+![Interface Preview3](images/image3.png)
+
+
 
 ## ✨ Core Features
 
@@ -80,7 +84,6 @@ Dufs Web is a feature-rich file server **web frontend** solution built with vani
 - **Persistence**: Language settings saved in localStorage
 - **Real-time Switch**: Instant UI update when switching languages
 
-![File Management](images/image2.png)
 
 ### 🎨 User Experience
 - **Responsive Design**: Adapts to desktop and mobile devices
@@ -100,7 +103,6 @@ Dufs Web is a feature-rich file server **web frontend** solution built with vani
 - **XSS Protection**: All user input is HTML entity encoded
 - **Page Unload Protection**: Confirmation prompt when unsaved content or active tasks exist
 
-![Upload & Download](images/image3.png)
 
 ## 🚀 Quick Start
 

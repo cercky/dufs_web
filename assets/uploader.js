@@ -293,17 +293,9 @@ class UploadManager {
    * 检查服务器上是否已有文件
    */
   async _checkExistingFile(task) {
-    try {
-      const res = await fetchWithAuth(task.url, { method: 'HEAD' });
-      if (res.ok) {
-        task.uploadOffset = parseInt(res.headers.get('content-length') ?? '0') || 0;
-        task.uploadedSize = task.uploadOffset;
-      }
-    } catch {
-      // 静默处理：404 表示文件不存在是正常的，不需要错误日志
-      task.uploadOffset = 0;
-      task.uploadedSize = 0;
-    }
+    // 不再需要检查文件大小，因为我们总是使用 PUT 请求覆盖整个文件
+    task.uploadOffset = 0;
+    task.uploadedSize = 0;
   }
 
   /**
@@ -317,7 +309,7 @@ class UploadManager {
       task.xhr = xhr;
       
       xhr.upload.addEventListener('progress', (e) => {
-        const totalUploaded = task.uploadOffset + e.loaded;
+        const totalUploaded = e.loaded;
         const now = Date.now();
         
         // 计算上传速度
@@ -356,16 +348,10 @@ class UploadManager {
         reject(new Error('Aborted'));
       });
 
-      if (task.uploadOffset > 0 && task.uploadOffset < task.fileSize) {
-        xhr.open('PATCH', task.url);
-        xhr.setRequestHeader('X-Update-Range', 'append');
-        this._applyAuthHeader(xhr);
-        xhr.send(task.file.slice(task.uploadOffset));
-      } else {
-        xhr.open('PUT', task.url);
-        this._applyAuthHeader(xhr);
-        xhr.send(task.file);
-      }
+      // 总是使用 PUT 请求覆盖文件，而不是 PATCH 请求追加内容
+      xhr.open('PUT', task.url);
+      this._applyAuthHeader(xhr);
+      xhr.send(task.file);
     });
   }
   

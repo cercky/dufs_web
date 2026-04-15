@@ -580,7 +580,12 @@ async function loadDirectory(path, skipPushState = false) {
     
     // 更新 URL 但不刷新页面（除非是 popstate 调用）
     if (!skipPushState) {
-      const newPathUrl = newData.href;
+      let newPathUrl = newData.uri_prefix;
+      if (newPathUrl.endsWith('/') && newData.href.startsWith('/')) {
+        newPathUrl += newData.href.substring(1);
+      } else {
+        newPathUrl += newData.href;
+      }
       history.pushState(null, '', newPathUrl);
     }
     

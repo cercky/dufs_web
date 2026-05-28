@@ -615,6 +615,14 @@ async function loadDirectory(path, skipPushState = false) {
       $fileCount.textContent = DATA.paths ? `${DATA.paths.length} ${t('items')}` : '';
     }
     
+    // 更新下载全部按钮的 href，确保指向当前目录
+    if (DATA.allow_archive) {
+      const $links = document.querySelectorAll('.download-zip-btn');
+      $links.forEach($link => {
+        $link.href = baseUrl() + '?zip';
+      });
+    }
+    
   } catch (error) {
     // 如果加载失败，回退到全局刷新
     location.href = path;

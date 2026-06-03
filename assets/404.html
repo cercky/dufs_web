@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="__ASSETS_PREFIX__favicon.ico">
+  <style>
+    :root {
+      --primary-color: #4A90E2;
+      --primary-hover: #357ABD;
+      --primary-light: #E8F4FC;
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F8F9FA;
+      --bg-tertiary: #F1F3F4;
+      --text-primary: #2C3E50;
+      --text-secondary: #5F6C7B;
+      --text-muted: #95A5A6;
+      --border-color: #E0E0E0;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+      --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.1);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-lg);
+    }
+
+    .not-found-container {
+      background: var(--bg-primary);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: var(--spacing-xl);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .not-found-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto var(--spacing-lg);
+      fill: var(--primary-color);
+    }
+
+    .not-found-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .not-found-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .not-found-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-xl);
+      line-height: 1.6;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-sm) var(--spacing-xl);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 600px) {
+      .not-found-container {
+        padding: var(--spacing-lg);
+      }
+
+      .not-found-title {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="not-found-container">
+    <svg class="not-found-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="15" y1="9" x2="9" y2="15"/>
+      <line x1="9" y1="9" x2="15" y2="15"/>
+      <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+      <circle cx="16" cy="8" r="1.5" fill="currentColor"/>
+    </svg>
+    <h1 class="not-found-title">404</h1>
+    <h2 class="not-found-subtitle" id="pageNotFoundTitle"></h2>
+    <p class="not-found-desc" id="pageNotFoundDesc"></p>
+    <p class="not-found-desc" id="checkUrlText"></p>
+    <a href="/" class="btn btn-primary" id="goBackBtn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+      <span id="goBackText"></span>
+    </a>
+  </div>
+
+  <script>
+    window.ASSETS_PREFIX = '__ASSETS_PREFIX__';
+
+    const I18N = {
+      'zh-CN': {
+        pageNotFound: '页面未找到',
+        pageNotFoundDesc: '抱歉，您访问的页面不存在。',
+        goBack: '返回首页',
+        checkUrl: '请检查网址是否正确'
+      },
+      'en-US': {
+        pageNotFound: 'Page Not Found',
+        pageNotFoundDesc: 'Sorry, the page you are looking for does not exist.',
+        goBack: 'Go Back',
+        checkUrl: 'Please check if the URL is correct'
+      }
+    };
+
+    let CURRENT_LANG = 'zh-CN';
+
+    function detectSystemLanguage() {
+      const userLang = navigator.language || navigator.userLanguage;
+      return userLang.startsWith('zh') ? 'zh-CN' : 'en-US';
+    }
+
+    function loadLanguage() {
+      const saved = localStorage.getItem('dufs_language');
+      if (saved === 'zh-CN' || saved === 'en-US') return saved;
+      return detectSystemLanguage();
+    }
+
+    function t(key) {
+      return I18N[CURRENT_LANG][key] || key;
+    }
+
+    function updateTranslations() {
+      document.getElementById('pageNotFoundTitle').textContent = t('pageNotFound');
+      document.getElementById('pageNotFoundDesc').textContent = t('pageNotFoundDesc');
+      document.getElementById('checkUrlText').textContent = t('checkUrl');
+      document.getElementById('goBackText').textContent = t('goBack');
+      document.documentElement.lang = CURRENT_LANG;
+    }
+
+    CURRENT_LANG = loadLanguage();
+    updateTranslations();
+  </script>
+</body>
+</html>

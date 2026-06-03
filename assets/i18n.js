@@ -148,6 +148,10 @@ const I18N = {
     moveLabel: '新路径',
     noData: '没有数据',
     uploadComplete: '上传完成',
+    pageNotFound: '页面未找到',
+    pageNotFoundDesc: '抱歉，您访问的页面不存在。',
+    goBack: '返回首页',
+    checkUrl: '请检查网址是否正确',
   },
   'en-US': {
     searchPlaceholder: 'Search files or folders...',
@@ -293,6 +297,10 @@ const I18N = {
     moveLabel: 'New path',
     noData: 'No data',
     uploadComplete: 'Upload complete',
+    pageNotFound: 'Page Not Found',
+    pageNotFoundDesc: 'Sorry, the page you are looking for does not exist.',
+    goBack: 'Go Back',
+    checkUrl: 'Please check if the URL is correct',
   }
 };
 
